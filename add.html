@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><head><title>Add a video | Brainwick</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css">
+<!-- ADSENSE: after you apply, paste the code Google gives you here (and the same on every page) -->
+<!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> --><meta name="robots" content="noindex"></head><body><header class="top"><div class="wrap"><a class="logo" href="./"><span>Brainwick</span></a><nav><a href="./">Lessons</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="https://www.youtube.com/@TheEducart" rel="noopener">YouTube</a></nav></div></header>
+<main class="wrap prose"><h1>Add a video</h1><p>Fill this in, copy the result, and paste it into <code>videos.js</code> (inside the square brackets, newest first). Then upload the file to your host.</p>
+<label class="f" for="u">YouTube link</label><input id="u" placeholder="https://www.youtube.com/watch?v=...">
+<label class="f" for="t">Title</label><input id="t">
+<label class="f" for="s">Subject</label><input id="s" placeholder="e.g. Biology">
+<label class="f" for="n">Notes (one per line)</label><textarea id="n" rows="5"></textarea>
+<label class="f" for="q">Questions (one per line)</label><textarea id="q" rows="5" placeholder="Question | Option A | Option B | Option C | number of correct option | why"></textarea>
+<p><button class="btn" id="go">Make entry</button></p><pre id="o" aria-live="polite"></pre><button class="btn alt" id="cp">Copy</button></main>
+<script>
+var $=function(i){return document.getElementById(i)};
+$("go").onclick=function(){
+ var m=$("u").value.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/),id=m?m[1]:$("u").value.trim();
+ var qs=$("q").value.split("\n").filter(Boolean).map(function(l){var a=l.split("|").map(function(x){return x.trim()});var k=parseInt(a[a.length-2],10)-1;return{q:a[0],options:a.slice(1,-2),answer:k,why:a[a.length-1]}});
+ var e={id:id,title:$("t").value.trim(),subject:$("s").value.trim(),date:new Date().toISOString().slice(0,10),notes:$("n").value.split("\n").filter(Boolean),questions:qs};
+ $("o").textContent=JSON.stringify(e,null,2)+",";};
+$("cp").onclick=function(){navigator.clipboard.writeText($("o").textContent)};
+</script></body></html>
